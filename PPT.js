@@ -80,9 +80,7 @@
 
 			console.log(toolbar);
 		}
-
-
-
+		
 	}
 }
 

@@ -163,7 +163,7 @@ class StencilItem extends HTMLDivElement{
 
 	}
 
-
+ 
 
 }
 

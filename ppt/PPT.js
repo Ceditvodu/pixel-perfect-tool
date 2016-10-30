@@ -1,4 +1,5 @@
 'use strict'
+{
 /**
   * @name PPT
   * @version 1.0.1
@@ -16,27 +17,29 @@
 					'0x960': '320px.jpg'
 				}
 			});
-  * @param {Boolean} enabled - Status trigger.
-  * @param {String} position - Position of toolbox interface on document.
-  * @param {Object} items - List of items in next structer {'min_resolutionxmax_resolution':'file adress'}.
+  * @param {Boolean} parametrs.enabled - Status trigger.
+  * @param {String} parametrs.position - Position of toolbox interface on document.
+  * @param {Object} parametrs.items - List of items in next structer {'min_resolutionxmax_resolution':'file adress'}.
   */
-
-{
 	var ppt = (parameters, ...args) => {
-		var enabled;
-		var positions;
-		var items;
-
 		let init = ({
 			string: ajaxCall,
 			object: setup,
 		})[typeof parameters] || (()=>{log('please setup pixel-perfect-tool options')});
 		init(parameters, addToolbar, addStencils);
+	}
 
+  /**
+    * @function setup 
+    * @desc Initialized work of script according parametrs.
+    * @param {Object} parametrs  - parametrs that tackes from host function.
+    * @mamberof ppt
+    * @instance
+    */
 		function setup(parameters, buildToolbar, buildStencils){
-			enabled = parameters.enabled || false;
-			positions = parameters.position.split(" ") || ['left', 'top'];
-			items = parameters.items || false;
+			var enabled = parameters.enabled || false;
+			var positions = parameters.position.split(" ") || ['left', 'top'];
+			var items = parameters.items || false;
 
 			let start = ({
 				1: () => {
@@ -51,75 +54,104 @@
 			start();		
 		}
 
-		function ajaxCall(parameters){
-			log('i will make it soon');
-		}
-
-		function addToolbar(status, positions){
-			let body = document.body;
-			addStyles(body);
-			let toolbar = document.createElement('div');
-			toolbar.className = "toolbar";
-
-			let stencils = document.createElement('div');
-			stencils.className = "stencils";
-
-
-			let addPosition = (positions_array, element, index) => {
-				({
-					1: () => { 
-						element.style[positions_array[index]] = '0px';
-						addPosition(positions_array, element, ++index);
-					},
-					0: () => {}
-				})[+(index<=positions_array.length)]();
-			} 
-			addPosition(positions, toolbar, 0);
-
-			body.append(toolbar);
-			body.append(stencils);
-
-			log(toolbar);
-		}
-
-		function addStencils(items){
-			let body = document.body;
-
-			let stencils = document.getElementsByClassName('stencils')[0];
-			//var stencil = new Stencil;
-
-			var resolutions = Object.keys(items).map( key =>
-			{ 
-				var stencil = new Stencil;
-				stencil.dataset.max_res = Math.max.apply(null, key.split('x'));
-				stencil.dataset.min_res = Math.min.apply(null, key.split('x'));
-				stencil.dataset.url = items[key];
-				return stencil;
-			});
-
-			var createStencils = (array, parent, index) => {
-				({
-					1: ()=>{
-						stencils.append(array[index]);
-						console.dir(array[index]);
-						createStencils(array, parent, ++index);
-					},
-					0: ()=>{}
-				}[+(index < array.length)])();
-			}
-			createStencils(resolutions, stencils, 0);
-
-			log(resolutions);
-
-			
-		}
-
-		function log(message){
-			console.log(message);
-		}
-
+/**
+  * @function ajaxCall 
+  * @desc For getting parametrs from outer file.
+  * @param {Object} parametrs  - Parametrs that tackes from host function.
+  * @mamberof ppt
+  * @instance
+  */
+	function ajaxCall(parameters){
+		log('i will make it soon');
 	}
 
+/**
+  * @function addToolbar 
+  * @desc Function that adding html code of toolbar to document.
+  * @param {Boolean} status  - Worked script or no.
+  * @param {String} positions - Toolbar position according window [top, right, bottom, left].
+  * @mamberof ppt
+  * @instance
+  */
+	function addToolbar(status, positions){
+		let body = document.body;
+		addStyles(body);
+		let toolbar = document.createElement('div');
+		toolbar.className = "toolbar";
+
+		let stencils = document.createElement('div');
+		stencils.className = "stencils";
+
+		let addPosition = (positions_array, element, index) => {
+			({
+				1: () => { 
+					element.style[positions_array[index]] = '0px';
+					addPosition(positions_array, element, ++index);
+				},
+				0: () => {}
+			})[+(index<=positions_array.length)]();
+		} 
+		addPosition(positions, toolbar, 0);
+
+		body.append(toolbar);
+		body.append(stencils);
+
+		log(toolbar);
+	}
+
+/**
+  * @function addStencils 
+  * @desc Function that adding html code of toolbar to document.
+  * @param {Boolean} status  - Worked script or no.
+  * @mamberof ppt
+  * @instance
+  */
+	function addStencils(items){
+		let body = document.body;
+		let stencils = document.getElementsByClassName('stencils')[0];
+		
+		var resolutions = Object.keys(items).map( key =>
+		{ 
+			var stencil = new Stencil;
+			stencil.dataset.max_res = Math.max.apply(null, key.split('x'));
+			stencil.dataset.min_res = Math.min.apply(null, key.split('x'));
+			stencil.dataset.url = items[key];
+			return stencil;
+		});
+
+		var createStencils = (array, parent, index) => {
+			({
+				1: ()=>{
+					stencils.append(array[index]);
+					console.dir(array[index]);
+					createStencils(array, parent, ++index);
+				},
+				0: ()=>{}
+			}[+(index < array.length)])();
+		}
+		createStencils(resolutions, stencils, 0);
+
+		log(resolutions);
+	}
+
+/**
+  * @function log 
+  * @desc Cut the long log call.
+  * @param {String} message  - what must be shown in console.
+  * @mamberof ppt
+  * @instance
+  */
+	function log(message){
+		console.log(message);
+	}
+
+/**
+  * @function addStyles 
+  * @desc Adding global styles to the dom.
+  * @param {Object} body  - body of document.
+  * @mamberof ppt
+  * @instance
+  */
 	function addStyles(body){
 		let style = document.createElement('style');
 		style.innerHTML = `

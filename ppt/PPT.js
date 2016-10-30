@@ -92,12 +92,57 @@
 			})[+(index<=positions_array.length)]();
 		} 
 		addPosition(positions, toolbar, 0);
+		toolbar.innerHTML = addTools();
 
 		body.append(toolbar);
 		body.append(stencils);
 
 		log(toolbar);
 	}
+
+/**
+  * @function addToolbar 
+  * @desc Function that adding html code of toolbar to document.
+  * @param {Boolean} status  - Worked script or no.
+  * @param {String} positions - Toolbar position according window [top, right, bottom, left].
+  * @mamberof ppt
+  * @instance
+  */
+	function addTools(){
+		var parent = document.createElement('div');
+		parent.append(createOnOff());
+
+		return parent.innerHTML;
+	}	
+
+/**
+  * @function addToolbar 
+  * @desc Function that adding html code of toolbar to document.
+  * @param {Boolean} status  - Worked script or no.
+  * @param {String} positions - Toolbar position according window [top, right, bottom, left].
+  * @mamberof ppt
+  * @instance
+  */
+	function createOnOff(){
+		let on_off = document.createElement('span');
+		on_off.className = 'toolbar_tool';
+
+		let label = document.createElement('label');
+		label.className = 'toolbar_on-off toolbar_on-off__on';
+		label.htmlFor = 'on-off';
+		label.innerHTML = 'off';
+		on_off.append(label);
+
+		let control = document.createElement('input');
+		control.type = 'checkbox';
+		control.id = 'on-off'
+		on_off.append(control);
+
+		console.dir('<input type="checkbox" for="on-off">')
+
+
+		return on_off;
+	}	
 
 /**
   * @function addStencils 
@@ -109,7 +154,7 @@
 	function addStencils(items){
 		let body = document.body;
 		let stencils = document.getElementsByClassName('stencils')[0];
-		
+
 		var resolutions = Object.keys(items).map( key =>
 		{ 
 			var stencil = new Stencil;

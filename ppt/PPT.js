@@ -78,6 +78,7 @@
 		addStyles(body);
 		let toolbar = document.createElement('div');
 		toolbar.className = "toolbar";
+		
 
 		let stencils = document.createElement('div');
 		stencils.className = "stencils";
@@ -95,6 +96,7 @@
 		toolbar.innerHTML = addTools();
 
 		body.append(toolbar);
+				toolbar.addEventListener("click", ()=>{delegate(toolbar)} );
 		body.append(stencils);
 
 		log(toolbar);
@@ -128,7 +130,7 @@
 		on_off.className = 'toolbar_tool';
 
 		let label = document.createElement('label');
-		label.className = 'toolbar_on-off toolbar_on-off__on';
+		label.className = 'toolbar_on-off toolbar_on-off__off';
 		label.htmlFor = 'on-off';
 		label.innerHTML = 'off';
 		on_off.append(label);
@@ -177,6 +179,22 @@
 		createStencils(resolutions, stencils, 0);
 
 		log(resolutions);
+	}
+
+	function delegate(object){
+		let on_off = document.getElementById('on-off');
+		console.dir(on_off);
+
+		({
+			1:()=>{
+				var stencils = document.getElementsByTagName('stencil-item')[0];
+				stencils.style.display = 'none';
+			},
+			0:()=>{
+				var stencils = document.getElementsByTagName('stencil-item')[0];
+				stencils.style.display = 'block';
+			}
+		}[+(on_off.checked)])()
 	}
 
 /**
@@ -260,20 +278,28 @@ class StencilItem extends HTMLDivElement{
 	}
 
 	createdCallback(){
-		this.item_id = Math.round(Math.random()*10000);
-		this.className = "stencils_item stencils_item__"+this.item_id;
+
+		this.className = "stencils_item";
 	}
 
 	attachedCallback(){
 
-		this.innerHTML = `
+  	var shadow = this.createShadowRoot();
+
+		shadow.innerHTML = `
+		<p>
 			<img src="`+this.dataset.url+`">
+		</p>
+		`;
+		shadow.innerHTML += `
 			<style>
-				.stencils_item__`+this.item_id+`{
+				p{
 					display: none;
+					text-align: center;
+					margin: 0;
 				}
 				@media screen and (min-width:`+this.dataset.min_res+`px) and (max-width:`+this.dataset.max_res+`px){
-					.stencils_item__`+this.item_id+`{
+					p{
 						display: block;
 					}
 				}

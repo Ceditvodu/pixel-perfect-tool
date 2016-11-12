@@ -234,6 +234,9 @@
 						position: absolute;
 						width: 100px;
 					}
+					.toolbar input[type="checkbox"]{
+						display: none;
+					}
 					.stencils{
 						height:100%;
 						left:0px;

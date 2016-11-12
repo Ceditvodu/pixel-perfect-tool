@@ -99,7 +99,7 @@
 
 		body.append(toolbar);
 			
-			toolbar.addEventListener("click", (event)=>{delegate(toolbar, event)} );
+		toolbar.addEventListener("click", (event)=>{delegate(toolbar, event)} );
 		
 		body.append(stencils);
 	}

@@ -75,11 +75,12 @@
   */
 	function addToolbar(status, positions){
 		let body = document.body;
+
 		addStyles(body);
+
 		let toolbar = document.createElement('div');
 		toolbar.className = "toolbar";
 		
-
 		let stencils = document.createElement('div');
 		stencils.className = "stencils";
 
@@ -93,13 +94,14 @@
 			})[+(index<=positions_array.length)]();
 		} 
 		addPosition(positions, toolbar, 0);
+
 		toolbar.innerHTML = addTools();
 
 		body.append(toolbar);
-				toolbar.addEventListener("click", ()=>{delegate(toolbar)} );
+			
+			toolbar.addEventListener("click", (event)=>{delegate(toolbar, event)} );
+		
 		body.append(stencils);
-
-		log(toolbar);
 	}
 
 /**
@@ -131,17 +133,14 @@
 
 		let label = document.createElement('label');
 		label.className = 'toolbar_on-off toolbar_on-off__off';
-		label.htmlFor = 'on-off';
+		label.htmlFor = 'onoff';
 		label.innerHTML = 'off';
 		on_off.append(label);
 
 		let control = document.createElement('input');
 		control.type = 'checkbox';
-		control.id = 'on-off'
+		control.id = 'onoff'
 		on_off.append(control);
-
-		console.dir('<input type="checkbox" for="on-off">')
-
 
 		return on_off;
 	}	
@@ -170,7 +169,6 @@
 			({
 				1: ()=>{
 					stencils.append(array[index]);
-					console.dir(array[index]);
 					createStencils(array, parent, ++index);
 				},
 				0: ()=>{}
@@ -178,23 +176,34 @@
 		}
 		createStencils(resolutions, stencils, 0);
 
-		log(resolutions);
 	}
 
-	function delegate(object){
-		let on_off = document.getElementById('on-off');
-		console.dir(on_off);
+/**
+  * @function delegate 
+  * @desc delegation of events on toolbar.
+  * @param {Object} object  - Object under some action.
+  * @mamberof ppt
+  * @instance
+  */
+	function delegate(object, event){
+		let tool = event.target;
 
 		({
-			1:()=>{
-				var stencils = document.getElementsByTagName('stencil-item')[0];
-				stencils.style.display = 'none';
+			onoff:()=>{
+				({
+					1:()=>{
+						var stencils = document.getElementsByTagName('stencil-item')[0];
+						stencils.style.display = 'none';
+					},
+					0:()=>{
+						var stencils = document.getElementsByTagName('stencil-item')[0];
+						stencils.style.display = 'block';
+					}
+				}[+(tool.checked)])()
 			},
-			0:()=>{
-				var stencils = document.getElementsByTagName('stencil-item')[0];
-				stencils.style.display = 'block';
-			}
-		}[+(on_off.checked)])()
+			'':()=>{}
+		}[tool.id])()
+
 	}
 
 /**

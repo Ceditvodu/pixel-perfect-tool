@@ -134,7 +134,7 @@
 		let label = document.createElement('label');
 		label.className = 'toolbar_on-off toolbar_on-off__off';
 		label.htmlFor = 'onoff';
-		label.innerHTML = 'off';
+		label.innerHTML = 'on/off';
 		on_off.append(label);
 
 		let control = document.createElement('input');

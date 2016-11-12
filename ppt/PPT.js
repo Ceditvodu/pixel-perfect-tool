@@ -192,11 +192,11 @@
 			onoff:()=>{
 				({
 					1:()=>{
-						var stencils = document.getElementsByTagName('stencil-item')[0];
+						var stencils = document.getElementsByClassName('stencils')[0];
 						stencils.style.display = 'none';
 					},
 					0:()=>{
-						var stencils = document.getElementsByTagName('stencil-item')[0];
+						var stencils = document.getElementsByClassName('stencils')[0];
 						stencils.style.display = 'block';
 					}
 				}[+(tool.checked)])()
